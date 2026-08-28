@@ -1,0 +1,304 @@
+:root {
+    --bg-main: #060913;
+    --bg-card: rgba(13, 20, 38, 0.75);
+    --border-color: rgba(56, 189, 248, 0.2);
+    --neon-blue: #38bdf8;
+    --neon-green: #22c55e;
+    --neon-orange: #f59e0b;
+    --neon-red: #ef4444;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Tajawal', sans-serif;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.mono {
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+.cyber-grid {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+    background-size: 35px 35px;
+    z-index: -1;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(6, 9, 19, 0.8);
+    backdrop-filter: blur(8px);
+}
+
+.logo-text {
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.accent { color: var(--neon-blue); }
+
+.lang-toggle {
+    background: transparent;
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.lang-toggle:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 15px var(--neon-blue);
+}
+
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.hero-section {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.hero-section h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff, var(--neon-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-section p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.input-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+}
+
+.search-box {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    flex: 1;
+    background: #030712;
+    border: 1px solid var(--border-color);
+    padding: 14px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-box input:focus {
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.search-box button {
+    background: linear-gradient(135deg, #0284c7, var(--neon-blue));
+    border: none;
+    color: #000;
+    font-weight: 700;
+    padding: 0 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.search-box button:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px var(--neon-blue);
+}
+
+.preset-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.preset-btn {
+    background: #111827;
+    border: 1px solid #374151;
+    color: #d1d5db;
+    padding: 5px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: 0.2s;
+}
+
+.preset-btn.safe:hover { border-color: var(--neon-green); color: var(--neon-green); }
+.preset-btn.susp:hover { border-color: var(--neon-orange); color: var(--neon-orange); }
+.preset-btn.dang:hover { border-color: var(--neon-red); color: var(--neon-red); }
+
+.results-panel {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.hidden { display: none; }
+
+.top-verdict-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 20px;
+}
+
+@media(max-width: 768px) {
+    .top-verdict-grid { grid-template-columns: 1fr; }
+    .search-box { flex-direction: column; }
+}
+
+.risk-gauge-card, .deep-metrics-card, .layer-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.thermometer-container {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-top: 15px;
+}
+
+.thermometer-bar {
+    width: 22px;
+    height: 120px;
+    background: #1e293b;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+}
+
+.thermometer-fill {
+    width: 100%;
+    border-radius: 12px;
+    transition: height 0.8s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s;
+}
+
+.gauge-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.score-display {
+    font-size: 2.2rem;
+    font-weight: 900;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-block;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 15px;
+}
+
+.metric-item {
+    background: #090e1a;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border-right: 3px solid var(--neon-blue);
+}
+
+body[dir="ltr"] .metric-item {
+    border-right: none;
+    border-left: 3px solid var(--neon-blue);
+}
+
+.metric-item .label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.metric-item .val {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.layers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.layer-card .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.layer-card ul {
+    list-style: none;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+}
+
+.layer-card li {
+    margin-bottom: 6px;
+    position: relative;
+    padding-inline-start: 16px;
+}
+
+.layer-card li::before {
+    content: "•";
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--neon-blue);
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Malicious URL Radar</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="cyber-grid"></div>
+
+    <header class="navbar">
+        <div class="logo">
+            <span class="logo-radar"></span>
+            <span class="logo-text">CYBER<span class="accent">GUARD</span>.AI</span>
+        </div>
+        <button id="lang-btn" class="lang-toggle" onclick="toggleLanguage()">
+            <span id="lang-label">English</span>
+        </button>
+    </header>
+
+    <main class="container">
+        <section class="hero-section">
+            <h1 id="hero-title" class="glitch-title">رادار الذكاء الاصطناعي لكشف الروابط الخبيثة</h1>
+            <p id="hero-subtitle">تحليل هيكلي، سلوكي واستخباراتي للروابط عبر نماذج الفحص العميق في الوقت الفعلي</p>
+        </section>
+
+        <section class="input-card">
+            <div class="search-box">
+                <input type="text" id="url-input" placeholder="أدخل الرابط للفحص (مثال: http://192.168.1.1/login.php)..." />
+                <button id="scan-btn" onclick="analyzeURL()">
+                    <span id="scan-btn-text">بدء الفحص</span>
+                </button>
+            </div>
+            
+            <div class="preset-links">
+                <span id="preset-label">روابط سريعة:</span>
+                <button class="preset-btn safe" onclick="setPreset('https://www.google.com')">Safe (Google)</button>
+                <button class="preset-btn susp" onclick="setPreset('http://paypal-security-update.xyz/auth?user=test')">Phishing/DGA</button>
+                <button class="preset-btn dang" onclick="setPreset('http://185.220.101.5/payload.bin')">IP Malicious</button>
+            </div>
+        </section>
+
+        <!-- لوحة النتائج التفاعلية -->
+        <section id="results-panel" class="results-panel hidden">
+            
+            <div class="top-verdict-grid">
+                <div class="risk-gauge-card">
+                    <h3 id="risk-score-title">مقياس التهديد الإجمالي</h3>
+                    <div class="thermometer-container">
+                        <div class="thermometer-bar">
+                            <div id="risk-fill" class="thermometer-fill" style="height: 0%;"></div>
+                        </div>
+                        <div class="gauge-stats">
+                            <span id="risk-percentage" class="score-display">0%</span>
+                            <span id="risk-badge" class="badge">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="deep-metrics-card">
+                    <h3 id="metrics-title">الخصائص اللفظية والهندسية</h3>
+                    <div class="metrics-grid">
+                        <div class="metric-item">
+                            <span class="label" id="metric-entropy-lbl">عشوائية الرموز (Entropy):</span>
+                            <span id="val-entropy" class="val mono">0.00</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="label" id="metric-len-lbl">طول الرابط:</span>
+                            <span id="val-len" class="val mono">0</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="label" id="metric-ip-lbl">عنوان IP مباشر:</span>
+                            <span id="val-ip" class="val mono">لا</span>
+                        </div>
+                        <div class="metric-item">
+                            <span class="label" id="metric-ssl-lbl">بروتوكول التشفير:</span>
+                            <span id="val-ssl" class="val mono">HTTPS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- بطاقات تشخيص طبقات الأمان -->
+            <div class="layers-grid">
+                <div class="layer-card">
+                    <div class="card-header">
+                        <span class="card-icon">⚡</span>
+                        <h4 id="l1-title">تحليل بنية الرابط (Lexical)</h4>
+                    </div>
+                    <ul id="l1-reasons"></ul>
+                </div>
+
+                <div class="layer-card">
+                    <div class="card-header">
+                        <span class="card-icon">🌐</span>
+                        <h4 id="l2-title">سلوك النطاق (Domain Intel)</h4>
+                    </div>
+                    <ul id="l2-reasons"></ul>
+                </div>
+
+                <div class="layer-card">
+                    <div class="card-header">
+                        <span class="card-icon">🛡️</span>
+                        <h4 id="l3-title">مطابقة المصادر الخارجية</h4>
+                    </div>
+                    <ul id="l3-reasons"></ul>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
