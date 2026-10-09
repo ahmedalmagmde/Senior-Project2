@@ -2,10 +2,165 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0e17">
     <title>AI Malicious URL Radar</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- ===== تحسينات الجوال (تعمل فوق style.css بدون ما تغيّر تصميم الديسكتوب) ===== -->
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        html, body { max-width: 100%; overflow-x: hidden; }
+        img, svg, canvas { max-width: 100%; }
+
+        /* منع كسر التصميم بسبب الروابط الطويلة */
+        #l1-reasons li, #l2-reasons li, #l3-reasons li,
+        #url-input, .metric-item .val {
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        /* ---------- تابلت وأصغر ---------- */
+        @media (max-width: 900px) {
+            .container { width: 100% !important; max-width: 100% !important; padding-inline: 16px !important; }
+            .top-verdict-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+            .layers-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
+        }
+
+        /* ---------- جوال ---------- */
+        @media (max-width: 600px) {
+            body {
+                padding-left: env(safe-area-inset-left);
+                padding-right: env(safe-area-inset-right);
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+
+            /* الشريط العلوي */
+            .navbar {
+                padding: 12px 14px !important;
+                gap: 10px;
+                flex-wrap: nowrap !important;
+            }
+            .logo { font-size: 1.05rem !important; gap: 8px; min-width: 0; }
+            .logo-text { white-space: nowrap; }
+            .lang-toggle {
+                min-height: 40px;
+                padding: 8px 14px !important;
+                font-size: 0.9rem !important;
+                flex-shrink: 0;
+                touch-action: manipulation;
+            }
+
+            .container { padding-inline: 12px !important; padding-top: 16px !important; }
+
+            /* العنوان */
+            .hero-section { padding: 20px 4px !important; text-align: center; }
+            .hero-section h1, .glitch-title {
+                font-size: clamp(1.4rem, 6.5vw, 1.9rem) !important;
+                line-height: 1.5 !important;
+                margin-bottom: 10px !important;
+            }
+            .hero-section p { font-size: 0.95rem !important; line-height: 1.7; }
+
+            /* بطاقة الإدخال */
+            .input-card { padding: 16px 14px !important; border-radius: 14px !important; }
+            .search-box {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                width: 100%;
+            }
+            #url-input {
+                width: 100% !important;
+                min-height: 50px;
+                font-size: 16px !important; /* يمنع تكبير الشاشة تلقائياً في الآيفون */
+                padding: 12px 14px !important;
+                direction: ltr;
+                text-align: left;
+            }
+            #url-input::placeholder { direction: rtl; text-align: right; font-size: 0.85rem; }
+            #scan-btn {
+                width: 100% !important;
+                min-height: 50px;
+                font-size: 1.05rem !important;
+                touch-action: manipulation;
+            }
+
+            /* الروابط السريعة */
+            .preset-links {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                gap: 8px !important;
+                align-items: center;
+                margin-top: 14px !important;
+            }
+            #preset-label { width: 100%; font-size: 0.85rem; }
+            .preset-btn {
+                flex: 1 1 calc(50% - 8px);
+                min-height: 44px;
+                padding: 8px 10px !important;
+                font-size: 0.8rem !important;
+                touch-action: manipulation;
+            }
+
+            /* النتائج */
+            .results-panel { margin-top: 18px !important; }
+            .risk-gauge-card, .deep-metrics-card, .layer-card {
+                padding: 16px 14px !important;
+                border-radius: 14px !important;
+            }
+            .risk-gauge-card h3, .deep-metrics-card h3 { font-size: 1.05rem !important; }
+
+            /* مقياس الحرارة: أفقي على الجوال أحسن */
+            .thermometer-container {
+                gap: 16px !important;
+                align-items: center;
+                justify-content: center;
+            }
+            .thermometer-bar { height: 150px !important; }
+            .score-display { font-size: 2.2rem !important; }
+            .badge { font-size: 0.85rem !important; padding: 4px 12px !important; }
+
+            /* الخصائص */
+            .metrics-grid {
+                display: grid !important;
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+            .metric-item {
+                display: flex !important;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px !important;
+            }
+            .metric-item .label { font-size: 0.85rem !important; }
+            .metric-item .val { font-size: 0.9rem !important; text-align: left; direction: ltr; }
+
+            /* بطاقات الطبقات */
+            .card-header { gap: 8px; }
+            .card-header h4 { font-size: 0.98rem !important; line-height: 1.5; }
+            .layer-card ul { padding-inline-start: 18px !important; }
+            .layer-card li { font-size: 0.9rem !important; line-height: 1.7; margin-bottom: 8px; }
+        }
+
+        /* ---------- جوالات صغيرة جداً ---------- */
+        @media (max-width: 360px) {
+            .preset-btn { flex-basis: 100%; }
+            .logo { font-size: 0.95rem !important; }
+        }
+
+        /* تقليل الحركة لمن يفضلها (أخف على بطارية الجوال) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="cyber-bpcs"></div>
@@ -13,7 +168,7 @@
     <header class="navbar">
         <div class="logo">
             <span class="logo-radar"></span>
-            <span class="logo-text">CYBER<span class="accent">BPCS</span>
+            <span class="logo-text">CYBER<span class="accent">BPCS</span></span>
         </div>
         <button id="lang-btn" class="lang-toggle" onclick="toggleLanguage()">
             <span id="lang-label">English</span>
@@ -28,7 +183,7 @@
 
         <section class="input-card">
             <div class="search-box">
-                <input type="text" id="url-input" placeholder="أدخل الرابط للفحص (مثال: http://192.168.1.1/login.php)..." />
+                <input type="text" id="url-input" inputmode="url" autocapitalize="none" autocorrect="off" spellcheck="false" placeholder="أدخل الرابط للفحص (مثال: http://192.168.1.1/login.php)..." />
                 <button id="scan-btn" onclick="analyzeURL()">
                     <span id="scan-btn-text">بدء الفحص</span>
                 </button>
